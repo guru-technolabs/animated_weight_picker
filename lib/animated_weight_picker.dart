@@ -574,6 +574,7 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
               itemExtent: 30,
               squeeze: widget.squeeze,
               overAndUnderCenterOpacity: 1,
+              clipBehavior: Clip.none,
               onSelectedItemChanged: (index) {
                 setState(() => _selectedIndex = index);
                 if (widget.onChange == null) return;
