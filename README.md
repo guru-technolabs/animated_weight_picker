@@ -7,7 +7,7 @@
 <a href="https://developer.apple.com/ios/" style="pointer-events: stroke;" target="_blank">
 <img src="https://img.shields.io/badge/platform-iOS-blue"></a>
 
-<a href="https://github.com/guru-technolabs/animated_weight_picker" style="pointer-events: stroke;" target="_blank">
+<a href="https://github.com/guru-technolabs/animated_weight_picker/blob/main/LICENSE" style="pointer-events: stroke;" target="_blank">
 <img src="https://img.shields.io/github/license/guru-technolabs/animated_weight_picker"></a>
 
 
@@ -143,7 +143,7 @@ Widget build(BuildContext context) {
 
 # LICENSE!
 
-Animated Weight Picker is [MIT-licensed](https://github.com/guru-technolabs/animated_weight_picker/LICENSE "MIT-licensed").
+Animated Weight Picker is [MIT-licensed](https://github.com/guru-technolabs/animated_weight_picker/blob/main/LICENSE "MIT-licensed").
 
 ---
 
