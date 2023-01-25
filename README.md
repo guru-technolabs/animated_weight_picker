@@ -5,14 +5,12 @@
 <img src="https://img.shields.io/badge/platform-android-blue">
 </a>
 <a href="https://developer.apple.com/ios/" style="pointer-events: stroke;" target="_blank">
-<img src="https://img.shields.io/badge/platform-iOS-blue"></a>
-
+<img src="https://img.shields.io/badge/platform-iOS-blue"></a> 
 <a href="https://github.com/guru-technolabs/animated_weight_picker/blob/main/LICENSE" style="pointer-events: stroke;" target="_blank">
 <img src="https://img.shields.io/github/license/guru-technolabs/animated_weight_picker"></a>
 
 
-
-![Header image](https://github.com/guru-technolabs/animated_weight_picker/doc/template-1.png)
+![Header image](https://github.com/guru-technolabs/animated_weight_picker/blob/main/doc/template-1.png?raw=true)
 
 ## Supported Platforms
 
@@ -59,7 +57,7 @@ You can then use the AnimatedWeightPicker widget in your code.
 ## Usage and Examples
 
 <p>
-  <img src="https://github.com/guru-technolabs/animated_weight_picker/doc/example-1.gif"
+  <img src="https://github.com/guru-technolabs/animated_weight_picker/blob/main/doc/example-1.gif?raw=true"
     alt="An animated image of the weight picker UI" height="400"/>
   &nbsp;&nbsp;&nbsp;&nbsp;
 </p>
