@@ -1,6 +1,6 @@
 name: animated_weight_picker
-description: The Animated Weight Picker Flutter package is a customizable, animated weight picker widget for use in a Flutter application. It allows users to select a weight value by swiping or dragging a handle along a scale. The appearance and behavior of the widget can be configured through various properties and callbacks.
-version: 1.0.2
+description: Animated Weight Picker allows to select a weight by swiping or dragging a handle along a scale.
+version: 1.0.3
 repository: https://github.com/guru-technolabs/animated_weight_picker
 # This package supports all platforms listed below.
 platforms:

@@ -554,7 +554,8 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
     super.didUpdateWidget(old);
     if (old.max == widget.max &&
         old.min == widget.min &&
-        old.division.toPrecision(_divisionPrecision) == widget.division.toPrecision(_divisionPrecision)) return;
+        old.division.toPrecision(_divisionPrecision) ==
+            widget.division.toPrecision(_divisionPrecision)) return;
     createWeightList(onInit: false);
   }
 
@@ -597,7 +598,8 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
                     bool isMinorInterval = !isSelected &&
                         !isMajorInterval &&
                         !isSubInterval &&
-                        (_valueList[index].interval == INTERVAL_TYPE.MINOR || index == _valueList.length - 1);
+                        (_valueList[index].interval == INTERVAL_TYPE.MINOR ||
+                            index == _valueList.length - 1);
 
                     return RotatedBox(
                       quarterTurns: 45,
@@ -641,7 +643,8 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
                               ),
                             ),
                             if ((widget.showMajorIntervalText && isMajorInterval) ||
-                                (widget.showMinorIntervalText && isMinorInterval) ||
+                                (widget.showMinorIntervalText &&
+                                    isMinorInterval) ||
                                 (widget.showSubIntervalText && isSubInterval))
                               Text(
                                 _valueList[index].value,
@@ -687,7 +690,8 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
                     ),
               ),
               if (widget.showSuffix && widget.suffix == null)
-                Text(widget.suffixText, style: TextStyle(color: widget.suffixTextColor))
+                Text(widget.suffixText,
+                    style: TextStyle(color: widget.suffixTextColor))
               else if (widget.showSuffix && widget.suffix != null)
                 widget.suffix!
             ],

@@ -145,9 +145,11 @@ Widget build(BuildContext context) {
 
 Animated Weight Picker is [MIT-licensed](https://github.com/guru-technolabs/animated_weight_picker/blob/main/LICENSE "MIT-licensed").
 
----
-
-
 ## Thanks
 
 If something is missing or you want to add some feature, feel free to open a ticket or contribute!
+
+# Give Feedback
+
+We're always eager to hear about how our components are being used. If you've used one of our components in a project, please share the link with us at sales@gurutechnolabs.com.
+We're also happy to answer any questions or receive suggestions you may have about our work.
