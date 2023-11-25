@@ -417,6 +417,16 @@ class AnimatedWeightPicker extends StatefulWidget {
   ///
   final Function(String newValue)? onChange;
 
+  /// Initial value of a weight picker/value picker
+  /// it's determine the initial position of picker
+  /// ```dart
+  ///
+  /// 'Added by @prasetya4di'
+  /// ```
+  /// https://www.gurutechnolabs.com/
+  /// Web & App Development Company
+  final double? initialValue;
+
   /// ```dart
   ///
   /// 'Developed by GuruTechnolabs'
@@ -476,6 +486,8 @@ class AnimatedWeightPicker extends StatefulWidget {
     this.suffix,
     //
     this.onChange,
+    //
+    this.initialValue,
   })  : assert(!(max < min)),
         assert(!(min == max)),
         assert(!(max < 1)),
@@ -495,7 +507,9 @@ class AnimatedWeightPicker extends StatefulWidget {
         assert(!(minorIntervalTextSize > 20 || minorIntervalTextSize < 1)),
         assert(!(subIntervalTextSize > 20 || subIntervalTextSize < 1)),
         assert(!(division < 0.1 || division > 1)),
-        assert(squeeze > 0);
+        assert(squeeze > 0),
+        assert(!(initialValue != null &&
+            (initialValue < min || initialValue > max)));
 
   @override
   State<AnimatedWeightPicker> createState() => _AnimatedWeightPickerState();
@@ -508,10 +522,25 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
   final List<WheelModel> _valueList = [];
   int _selectedIndex = 0;
 
+  final _scrollController = FixedExtentScrollController();
+
   @override
   void initState() {
     super.initState();
     createWeightList(onInit: true);
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) {
+      scrollToInitialValue();
+    });
+  }
+
+  void scrollToInitialValue() {
+    if (widget.initialValue != null) {
+      final initialIndex = _valueList.indexWhere(
+        (element) => double.parse(element.value) == widget.initialValue,
+      );
+      if (initialIndex == -1) return;
+      _scrollController.jumpToItem(initialIndex);
+    }
   }
 
   void createWeightList({required bool onInit}) {
@@ -570,6 +599,8 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
           child: RotatedBox(
             quarterTurns: -45,
             child: ListWheelScrollView.useDelegate(
+              physics: const FixedExtentScrollPhysics(),
+              controller: _scrollController,
               offAxisFraction: 2,
               perspective: 0.003,
               itemExtent: 30,
