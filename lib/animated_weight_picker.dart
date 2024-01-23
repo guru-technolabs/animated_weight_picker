@@ -522,31 +522,22 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
   final List<WheelModel> _valueList = [];
   int _selectedIndex = 0;
 
-  final _scrollController = FixedExtentScrollController();
+  late final FixedExtentScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
     createWeightList(onInit: true);
-    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) {
-      scrollToInitialValue();
-    });
-  }
-
-  void scrollToInitialValue() {
-    if (widget.initialValue != null) {
-      final initialIndex = _valueList.indexWhere(
-        (element) => double.parse(element.value) == widget.initialValue,
-      );
-      if (initialIndex == -1) return;
-      _scrollController.jumpToItem(initialIndex);
-    }
   }
 
   void createWeightList({required bool onInit}) {
     _valueList.clear();
     double current = widget.min;
     double interval = widget.division.toPrecision(_divisionPrecision);
+
+    _selectedIndex = ((widget.initialValue ?? 0) / interval).round();
+    _scrollController =
+        FixedExtentScrollController(initialItem: _selectedIndex);
 
     int mjInterval = 0;
     int subInterval = widget.subIntervalAt;
