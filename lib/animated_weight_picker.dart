@@ -27,6 +27,15 @@ class AnimatedWeightPicker extends StatefulWidget {
   ///
   final double max;
 
+  /// Initial value to set the picker position
+  /// If not provided, defaults to min value
+  /// ```dart
+  ///
+  /// 'Modified for initial value support'
+  /// ```
+  ///
+  final double? initialValue;
+
   /// Interval by value
   ///
   /// ```dart
@@ -433,6 +442,7 @@ class AnimatedWeightPicker extends StatefulWidget {
     //
     required this.min,
     required this.max,
+    this.initialValue, // Added initialValue parameter
     //
     this.division = 0.5,
     //
@@ -481,6 +491,9 @@ class AnimatedWeightPicker extends StatefulWidget {
         assert(!(max < 1)),
         assert(!(min < 0)),
         assert(!(max > 1000)),
+        assert(
+          initialValue == null || (initialValue >= min && initialValue <= max),
+        ), // Added initialValue validation
         assert(!(dialHeight > 110 || dialHeight < 3)),
         assert(!(dialThickness > 5 || dialThickness < 0.5)),
         assert(!(majorIntervalHeight > 110 || majorIntervalHeight < 3)),
@@ -507,11 +520,32 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
 
   final List<WheelModel> _valueList = [];
   int _selectedIndex = 0;
+  late FixedExtentScrollController _scrollController; // Added scroll controller
 
   @override
   void initState() {
     super.initState();
     createWeightList(onInit: true);
+
+    // Calculate initial index based on initialValue
+    int initialIndex = 0;
+    if (widget.initialValue != null) {
+      double targetValue = widget.initialValue!.clamp(widget.min, widget.max);
+      double interval = widget.division.toPrecision(_divisionPrecision);
+      initialIndex = ((targetValue - widget.min) / interval).round().clamp(
+            0,
+            _valueList.length - 1,
+          );
+    }
+
+    _scrollController = FixedExtentScrollController(initialItem: initialIndex);
+    _selectedIndex = initialIndex;
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void createWeightList({required bool onInit}) {
@@ -546,7 +580,31 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
       currentIndex++;
       current += interval;
     } while (current.toPrecision(2) <= widget.max);
-    if (!onInit) setState(() {});
+
+    // Update scroll controller when widget is updated
+    if (!onInit && mounted) {
+      // Recalculate initial position if initialValue changed
+      int newIndex = 0;
+      if (widget.initialValue != null) {
+        double targetValue = widget.initialValue!.clamp(widget.min, widget.max);
+        double intervalCalc = widget.division.toPrecision(_divisionPrecision);
+        newIndex = ((targetValue - widget.min) / intervalCalc).round().clamp(
+              0,
+              _valueList.length - 1,
+            );
+      }
+
+      // Only animate if the index actually changed
+      if (newIndex != _selectedIndex) {
+        _scrollController.animateToItem(
+          newIndex,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+
+      setState(() {});
+    }
   }
 
   @override
@@ -554,6 +612,7 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
     super.didUpdateWidget(old);
     if (old.max == widget.max &&
         old.min == widget.min &&
+        old.initialValue == widget.initialValue &&
         old.division.toPrecision(_divisionPrecision) ==
             widget.division.toPrecision(_divisionPrecision)) return;
     createWeightList(onInit: false);
@@ -570,6 +629,7 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
           child: RotatedBox(
             quarterTurns: -45,
             child: ListWheelScrollView.useDelegate(
+              controller: _scrollController, // Added controller
               offAxisFraction: 2,
               perspective: 0.003,
               itemExtent: 30,
@@ -680,7 +740,9 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                _valueList[_selectedIndex].value,
+                _selectedIndex < _valueList.length
+                    ? _valueList[_selectedIndex].value
+                    : '',
                 style: widget.selectedValueStyle ??
                     TextStyle(
                       fontWeight: FontWeight.w700,
@@ -690,10 +752,12 @@ class _AnimatedWeightPickerState extends State<AnimatedWeightPicker> {
                     ),
               ),
               if (widget.showSuffix && widget.suffix == null)
-                Text(widget.suffixText,
-                    style: TextStyle(color: widget.suffixTextColor))
+                Text(
+                  widget.suffixText,
+                  style: TextStyle(color: widget.suffixTextColor),
+                )
               else if (widget.showSuffix && widget.suffix != null)
-                widget.suffix!
+                widget.suffix!,
             ],
           ),
       ],
